@@ -8,7 +8,7 @@ Written mostly for fun (and to have something that is easy to write PHPUnit test
 
 An example is probably best here.
 
-```lang=php
+```php
 
 <?php
 
