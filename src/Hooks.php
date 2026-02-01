@@ -23,7 +23,7 @@ class Hooks {
 	 * @param string $hookName the name for the hook, must be unique
 	 * @param ?string $requiredClass A class that hook handlers for this hook will be checked for using the is_subclass_of() function, this check is skipped if null
 	 * @param string $methodName The method of hook handlers that will be called when fired
-	 * @param int $parameters Number of parameters that will be passed when firing this hook
+	 * @param int $parameters Number of parameters that will be required when firing this hook
 	 * @return void
 	 */
 	public function registerNewHook(string $hookName, ?string $requiredClass, string $methodName, int $parameters): void {
@@ -39,6 +39,13 @@ class Hooks {
 		return;
 	}
 
+	/**
+	 * Registers a hook handler for a previously-defined hook
+	 * 
+	 * @param string $hookName The hook in question
+	 * @param object $hookHandler The hook handler
+	 * @return void
+	 */
 	public function registerHookHandler(string $hookName, object $hookHandler): void {
 		if (!isset($this->hooks[$hookName])) {
 			throw new \Exception('Hook not declared!');
@@ -49,5 +56,26 @@ class Hooks {
 			}
 		}
 		$this->hooks[$hookName]['handlers'][] = $hookHandler;
+	}
+
+	/**
+	 * Fires a hook and calls all the handlers
+	 * @param string $hookName The hook in question
+	 * @param mixed ...$params An arbitrary number of hook parameters
+	 * @return array<mixed> The values returned by all the hook handlers, in order from when they were called. Empty array if there are no hook handlers
+	 */
+	public function fireHook(string $hookName, ...$params): array {
+		if (!isset($this->hooks[$hookName])) {
+			throw new \Exception('Hook not declared!');
+		}
+		if (count($params) !== $this->hooks[$hookName]['parameters']) {
+			throw new \Exception('Incorrect number of parameters for hook');
+		}
+		$returnArray = [];
+		$methodName = $this->hooks[$hookName]['methodName'];
+		foreach ($this->hooks[$hookName]['handlers'] as $handler) {
+			$returnArray[] = $handler->$methodName(...$params);
+		}
+		return $returnArray;
 	}
 }
