@@ -12,6 +12,7 @@ use \BlueSelene\Hooks\Exception\HookAlreadyDefinedException;
 use \BlueSelene\Hooks\Exception\HookHandlerWrongSubclassException;
 use \BlueSelene\Hooks\Exception\HookNotDefinedException;
 use \BlueSelene\Hooks\Exception\IncorrectNumberOfParametersException;
+use \BlueSelene\Hooks\Exception\MethodNotImplementedException;
 
 /**
  * The Hooks class. Registers hooks, allows specifying an interface or class that hook handlers should implement/extend for any specific hooks, and allows you to fire those hooks at any moment.
@@ -60,11 +61,15 @@ class Hooks {
 				throw new HookHandlerWrongSubclassException('Hook handler is not a subclass of a required class');
 			}
 		}
+		if (!method_exists($hookHandler, $this->hooks[$hookName]['methodName'])) {
+			throw new MethodNotImplementedException('Hook handler does not implement the required method');
+		}
 		$this->hooks[$hookName]['handlers'][] = $hookHandler;
 	}
 
 	/**
 	 * Fires a hook, calling all the handlers
+	 * 
 	 * @param string $hookName The hook in question
 	 * @param mixed ...$params An arbitrary number of hook parameters
 	 * @return array<mixed> The values returned by all the hook handlers, in order from when they were called. Empty array if there are no hook handlers
