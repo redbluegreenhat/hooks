@@ -1,6 +1,6 @@
 <?php
 
-namespace BlueSelene\Hooks\Exceptions;
+namespace BlueSelene\Hooks\Exception;
 
 use \BlueSelene\Hooks\Exceptions\HooksBaseException;
 
