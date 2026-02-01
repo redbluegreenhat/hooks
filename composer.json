@@ -1,21 +1,24 @@
 {
-    "name": "blueselene/hooks",
-    "description": "A very simple hook library inspired by MediaWiki's (somewhat)",
-    "type": "library",
-    "require-dev": {
-        "vimeo/psalm": "^6.15",
-        "phpunit/phpunit": "^12"
-    },
-    "license": "MPL-2.0",
-    "autoload": {
-        "psr-4": {
-            "BlueSelene\\Hooks\\": "src/"
-        }
-    },
-    "authors": [
-        {
-            "name": "Alex",
-            "email": "alex@blueselene.com"
-        }
-    ]
+	"name": "blueselene/hooks",
+	"description": "A very simple hook library inspired by MediaWiki's (somewhat)",
+	"type": "library",
+	"require-dev": {
+		"vimeo/psalm": "^6.15",
+		"phpunit/phpunit": "^12"
+	},
+	"license": "MPL-2.0",
+	"autoload": {
+		"psr-4": {
+			"BlueSelene\\Hooks\\": "src/"
+		}
+	},
+	"authors": [
+		{
+			"name": "Alex",
+			"email": "alex@blueselene.com"
+		}
+	],
+	"scripts": {
+		"test": "psalm && phpunit --testdox tests"
+	}
 }
