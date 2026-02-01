@@ -48,6 +48,6 @@ class Hooks {
 				throw new \Exception('Hook handler does not implement the required class');
 			}
 		}
-		$this->hooks[$hookName]['requiredClass']['handlers'][] = $hookHandler;
+		$this->hooks[$hookName]['handlers'][] = $hookHandler;
 	}
 }
