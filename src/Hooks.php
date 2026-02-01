@@ -8,6 +8,11 @@
 
 namespace BlueSelene\Hooks;
 
+use \BlueSelene\Hooks\Exception\HookAlreadyDefinedException;
+use \BlueSelene\Hooks\Exception\HookHandlerWrongSubclassException;
+use \BlueSelene\Hooks\Exception\HookNotDefinedException;
+use \BlueSelene\Hooks\Exception\IncorrectNumberOfParametersException
+
 /**
  * The Hooks class. Registers hooks, allows specifying an interface or class that hook handlers should implement/extend for any specific hooks, and allows you to fire those hooks at any moment.
  */
@@ -28,7 +33,7 @@ class Hooks {
 	 */
 	public function registerNewHook(string $hookName, ?string $requiredClass, string $methodName, int $parameters): void {
 		if (isset($this->hooks[$hookName])) {
-			throw new \Exception('Hook already declared!');
+			throw new HookAlreadyDefinedException("Hook {$hookName} is already defined");
 		}
 		$this->hooks[$hookName] = [
 			'requiredClass' => $requiredClass,
@@ -48,28 +53,28 @@ class Hooks {
 	 */
 	public function registerHookHandler(string $hookName, object $hookHandler): void {
 		if (!isset($this->hooks[$hookName])) {
-			throw new \Exception('Hook not declared!');
+			throw new HookNotDefinedException("Hook {$hookName} is undefined. Did you miss a call to Hooks::registerNewHook somewhere?");
 		}
 		if (!is_null($this->hooks[$hookName]['requiredClass'])) {
 			if (!is_subclass_of($hookHandler, $this->hooks[$hookName]['requiredClass'])) {
-				throw new \Exception('Hook handler does not implement the required class');
+				throw new HookHandlerWrongSubclassException('Hook handler is not a subclass of a required class');
 			}
 		}
 		$this->hooks[$hookName]['handlers'][] = $hookHandler;
 	}
 
 	/**
-	 * Fires a hook and calls all the handlers
+	 * Fires a hook, calling all the handlers
 	 * @param string $hookName The hook in question
 	 * @param mixed ...$params An arbitrary number of hook parameters
 	 * @return array<mixed> The values returned by all the hook handlers, in order from when they were called. Empty array if there are no hook handlers
 	 */
 	public function fireHook(string $hookName, ...$params): array {
 		if (!isset($this->hooks[$hookName])) {
-			throw new \Exception('Hook not declared!');
+			throw new HookNotDefinedException("Hook {$hookName} is undefined. Did you miss a call to Hooks::registerNewHook somewhere?");
 		}
 		if (count($params) !== $this->hooks[$hookName]['parameters']) {
-			throw new \Exception('Incorrect number of parameters for hook');
+			throw new IncorrectNumberOfParametersException('Incorrect number of parameters for hook');
 		}
 		$returnArray = [];
 		$methodName = $this->hooks[$hookName]['methodName'];
