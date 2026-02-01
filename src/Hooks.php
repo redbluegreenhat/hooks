@@ -11,7 +11,7 @@ namespace BlueSelene\Hooks;
 use \BlueSelene\Hooks\Exception\HookAlreadyDefinedException;
 use \BlueSelene\Hooks\Exception\HookHandlerWrongSubclassException;
 use \BlueSelene\Hooks\Exception\HookNotDefinedException;
-use \BlueSelene\Hooks\Exception\IncorrectNumberOfParametersException
+use \BlueSelene\Hooks\Exception\IncorrectNumberOfParametersException;
 
 /**
  * The Hooks class. Registers hooks, allows specifying an interface or class that hook handlers should implement/extend for any specific hooks, and allows you to fire those hooks at any moment.
