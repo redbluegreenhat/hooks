@@ -17,8 +17,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Update PHP
-      run: sudo apt-get update && sudo apt-get upgrade
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, intl, curl, xmlwriter
+        ini-values: post_max_size=256M, max_execution_time=180
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
