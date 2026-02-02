@@ -4,6 +4,8 @@ A very simple and easy to use hooks library. You register your hooks, register y
 
 Written mostly for fun (and to have something that is easy to write PHPUnit tests for). MPL-2.0 licensed.
 
+Requires at least PHP 8.3 (because that's the version I use and test with), but otherwise has no dependencies of its own.
+
 ### Usage
 
 An example is probably best here.
